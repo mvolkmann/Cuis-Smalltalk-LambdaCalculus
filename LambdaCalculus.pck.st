@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 1:16:49 pm'!
+'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 1:20:38 pm'!
 'Description '!
-!provides: 'LambdaCalculus' 1 9!
+!provides: 'LambdaCalculus' 1 11!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -30,9 +30,9 @@ block: aSymbol
 	
 	^ Blocks at: aSymbol! !
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 13:15:52'!
+!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 13:20:27'!
 initialize
-	| false_ fst pair phi snd succ true_  zero |
+	| false_ fst pair phi pred snd succ true_  zero |
 
 	Blocks := Dictionary new.
 	
@@ -62,17 +62,19 @@ initialize
 	fst := [:p | p value: true_].
 	snd := [:p | p value: false_].
 	phi := [:p | pair value: (snd value: p) :: value: (succ value: (snd value: p))].
+	pred := [:n | fst value: (n value: phi :: value: (pair value: zero :: value: zero))].
 	Blocks at: #pair put: pair.
 	Blocks at: #fst put: fst.
 	Blocks at: #snd put: snd.
 	Blocks at: #phi put: phi.
 	Blocks at: #pred put: [:n | fst value: (n value: phi :: value: (pair value: zero :: value: zero))].
 	
-	Blocks at: #add put: [:m | [:n | m value: succ :: value: n]].! !
+	Blocks at: #add put: [:m | [:n | m value: succ :: value: n]].
+	Blocks at: #sub put: [:m | [:n | n value: pred :: value: m]].! !
 
-!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 13:16:44'!
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 13:17:37'!
 testAdd
-	| zero one two three four five six add num |
+	| zero one two three four five add num |
 	
 	num := LC block: #num.
 	add := LC block: #add.
@@ -82,12 +84,11 @@ testAdd
 	three := LC block: #three.
 	four := LC block: #four.
 	five := LC block: #five.
-	six := LC block: #six.
 
 	self assert: (num value: (add value: zero :: value: zero)) equals: 0.
 	self assert: (num value: (add value: zero :: value: one)) equals: 1.
 	self assert: (num value: (add value: one :: value: zero)) equals: 1.
-	self assert: (num value: (add value: two :: value: three)) equals: 5.
+	self assert: (num value: (add value: three :: value: two)) equals: 5.
 	! !
 
 !LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:16:08'!
@@ -184,6 +185,25 @@ testPred
 	self assert: (num value: (pred value: one)) equals: 0.
 	self assert: (num value: (pred value: six)) equals: 5.
 ! !
+
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 13:19:52'!
+testSub
+	| zero one two three four five num sub |
+	
+	num := LC block: #num.
+	sub := LC block: #sub.
+	zero := LC block: #zero.
+	one := LC block: #one.
+	two := LC block: #two.
+	three := LC block: #three.
+	four := LC block: #four.
+	five := LC block: #five.
+
+	self assert: (num value: (sub value: zero :: value: zero)) equals: 0.
+	self assert: (num value: (sub value: one :: value: zero)) equals: 1.
+	self assert: (num value: (sub value: one :: value: one)) equals: 0.
+	self assert: (num value: (sub value: five :: value: two)) equals: 3.
+	! !
 
 !LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:24:24'!
 testSucc
