@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 1:20:38 pm'!
+'From Cuis7.3 [latest update: #7066] on 10 March 2025 at 3:09:10 pm'!
 'Description '!
-!provides: 'LambdaCalculus' 1 11!
+!provides: 'LambdaCalculus' 1 12!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -29,6 +29,16 @@ LCTests class
 block: aSymbol
 	
 	^ Blocks at: aSymbol! !
+
+!LC class methodsFor: 'as yet unclassified' stamp: 'RMV 3/10/2025 15:09:02'!
+church: aWholeNumber
+	| result |
+	
+	result := [:f | [:x | x]]. "zero"
+	aWholeNumber timesRepeat: [
+		result := [:f | [:x | f value: (result value: f :: value: x)]]
+	].
+	^ result.! !
 
 !LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 13:20:27'!
 initialize
