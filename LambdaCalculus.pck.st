@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:33:42 am'!
+'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 1:16:49 pm'!
 'Description '!
-!provides: 'LambdaCalculus' 1 8!
+!provides: 'LambdaCalculus' 1 9!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -25,16 +25,12 @@ LCTests class
 	instanceVariableNames: ''!
 
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 09:16:25'!
-True_
-	^ True_! !
-
 !LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 09:29:39'!
 block: aSymbol
 	
 	^ Blocks at: aSymbol! !
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 10:31:38'!
+!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 13:15:52'!
 initialize
 	| false_ fst pair phi snd succ true_  zero |
 
@@ -72,7 +68,26 @@ initialize
 	Blocks at: #phi put: phi.
 	Blocks at: #pred put: [:n | fst value: (n value: phi :: value: (pair value: zero :: value: zero))].
 	
-		
+	Blocks at: #add put: [:m | [:n | m value: succ :: value: n]].! !
+
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 13:16:44'!
+testAdd
+	| zero one two three four five six add num |
+	
+	num := LC block: #num.
+	add := LC block: #add.
+	zero := LC block: #zero.
+	one := LC block: #one.
+	two := LC block: #two.
+	three := LC block: #three.
+	four := LC block: #four.
+	five := LC block: #five.
+	six := LC block: #six.
+
+	self assert: (num value: (add value: zero :: value: zero)) equals: 0.
+	self assert: (num value: (add value: zero :: value: one)) equals: 1.
+	self assert: (num value: (add value: one :: value: zero)) equals: 1.
+	self assert: (num value: (add value: two :: value: three)) equals: 5.
 	! !
 
 !LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:16:08'!
