@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:24:28 am'!
+'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:33:42 am'!
 'Description '!
-!provides: 'LambdaCalculus' 1 7!
+!provides: 'LambdaCalculus' 1 8!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -34,9 +34,9 @@ block: aSymbol
 	
 	^ Blocks at: aSymbol! !
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 10:22:59'!
+!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 10:31:38'!
 initialize
-	| false_ true_ |
+	| false_ fst pair phi snd succ true_  zero |
 
 	Blocks := Dictionary new.
 	
@@ -50,14 +50,28 @@ initialize
 	Blocks at: #bool put:​ [:b | b value: true :: value: false].
 	Blocks at: #num put:​ [:n | n value: [:x | x + 1] :: value: 0].
 	
-	Blocks at: #zero put: [:f | [:x | x]].
+	zero := [:f | [:x | x]].
+	Blocks at: #zero put: zero.
 	Blocks at: #one put: [:f | [:x | f value: x]].
 	Blocks at: #two put: [:f | [:x | f value: (f value: x)]].
 	Blocks at: #three put: [:f | [:x | f value: (f value: (f value: x))]].
 	Blocks at: #four put: [:f | [:x | f value: (f value: (f value: (f value: x)))]].
 	Blocks at: #five put: [:f | [:x | f value: (f value: (f value: (f value: (f value: x))))]].
 	Blocks at: #six put: [:f | [:x | f value: (f value: (f value: (f value: (f value: (f value: x)))))]].
-	Blocks at: #succ put: [:n | [:f | [:x | f value: (n value: f :: value: x)]]].
+	
+	succ := [:n | [:f | [:x | f value: (n value: f :: value: x)]]].
+	Blocks at: #succ put: succ.
+	
+	pair := [:x | [:y | [:f | f value: x :: value: y]]].
+	fst := [:p | p value: true_].
+	snd := [:p | p value: false_].
+	phi := [:p | pair value: (snd value: p) :: value: (succ value: (snd value: p))].
+	Blocks at: #pair put: pair.
+	Blocks at: #fst put: fst.
+	Blocks at: #snd put: snd.
+	Blocks at: #phi put: phi.
+	Blocks at: #pred put: [:n | fst value: (n value: phi :: value: (pair value: zero :: value: zero))].
+	
 		
 	! !
 
@@ -137,6 +151,24 @@ testOr
 	self assert: (bool value: (or value: false_ :: value: true_)) equals: true.
 	self assert: (bool value: (or value: false_ :: value: false_)) equals: false.
 	! !
+
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:33:32'!
+testPred
+	| zero one two three four five six num pred |
+	
+	num := LC block: #num.
+	pred := LC block: #pred.
+	zero := LC block: #zero.
+	one := LC block: #one.
+	two := LC block: #two.
+	three := LC block: #three.
+	four := LC block: #four.
+	five := LC block: #five.
+	six := LC block: #six.
+
+	self assert: (num value: (pred value: one)) equals: 0.
+	self assert: (num value: (pred value: six)) equals: 5.
+! !
 
 !LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:24:24'!
 testSucc
