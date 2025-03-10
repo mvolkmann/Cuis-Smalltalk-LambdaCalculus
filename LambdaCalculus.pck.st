@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:18:44 am'!
+'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:20:46 am'!
 'Description '!
-!provides: 'LambdaCalculus' 1 5!
+!provides: 'LambdaCalculus' 1 6!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -102,14 +102,26 @@ testNot
 	self assert: (bool value: (not value: false_)) equals: true.
 ! !
 
-!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:17:43'!
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:20:41'!
 testNum
-	| num zero |
+	| num zero one two three four five six|
 	
 	num := LC block: #num.
 	zero := LC block: #zero.
+	one := LC block: #one.
+	two := LC block: #two.
+	three := LC block: #three.
+	four := LC block: #four.
+	five := LC block: #five.
+	six := LC block: #six.
 
-	self assert: (num value: zero) equals: 0.! !
+	self assert: (num value: zero) equals: 0.
+	self assert: (num value: one) equals: 1.
+	self assert: (num value: two) equals: 2.
+	self assert: (num value: three) equals: 3.
+	self assert: (num value: four) equals: 4.
+	self assert: (num value: five) equals: 5.
+	self assert: (num value: six) equals: 6.! !
 
 !LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:16:33'!
 testOr
