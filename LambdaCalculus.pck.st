@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7066] on 10 March 2025 at 4:49:06 pm'!
+'From Cuis7.3 [latest update: #7066] on 10 March 2025 at 6:56:23 pm'!
 'Description '!
-!provides: 'LambdaCalculus' 1 44!
+!provides: 'LambdaCalculus' 1 47!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -41,7 +41,7 @@ church: aWholeNumber
 		result
 	]]! !
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'RMV 3/10/2025 16:49:02'!
+!LC class methodsFor: 'as yet unclassified' stamp: 'RMV 3/10/2025 17:04:03'!
 initialize
 	| add facgen false_ fst iszero mul pair phi pred snd succ true_  ycomb zero one |
 
@@ -96,10 +96,12 @@ initialize
 	
 	ycomb := [:f | [:x | x value: x] value: [:x | f value: [:y | x value: x :: value: y]]].
 	facgen := [:f | [:n |
-		iszero value: n
+		| block |
+		block := iszero value: n
 			:: value: [one]
-			:: value: [mul value: n :: value: (f value: (pred value: n))]
-		]].
+			:: value: [mul value: n :: value: (f value: (pred value: n))].
+		block value.
+	]].
 	Blocks at: #factorial put: (ycomb value: facgen).
 ! !
 
@@ -187,7 +189,7 @@ testExp
 	self assert: (num value: (exp value: two :: value: three)) equals: 8.
 	! !
 
-!LCTests methodsFor: 'testing' stamp: 'RMV 3/10/2025 16:43:58'!
+!LCTests methodsFor: 'testing' stamp: 'RMV 3/10/2025 18:56:18'!
 testFactorial
 	| zero one two three four five factorial num |
 	
@@ -201,11 +203,11 @@ testFactorial
 	five := LC block: #five.
 	
 	self assert: (num value: (factorial value: zero)) equals: 1.
-	"self assert: (num value: (factorial value: one)) equals: 1.
+	self assert: (num value: (factorial value: one)) equals: 1.
 	self assert: (num value: (factorial value: two)) equals: 2.
 	self assert: (num value: (factorial value: three)) equals: 6.
 	self assert: (num value: (factorial value: four)) equals: 24.
-	self assert: (num value: (factorial value: five)) equals: 120."! !
+	self assert: (num value: (factorial value: five)) equals: 120.! !
 
 !LCTests methodsFor: 'testing' stamp: 'RMV 3/10/2025 16:11:34'!
 testIsZero
