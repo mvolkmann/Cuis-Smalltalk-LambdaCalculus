@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:20:46 am'!
+'From Cuis7.3 [latest update: #7036] on 10 March 2025 at 10:24:28 am'!
 'Description '!
-!provides: 'LambdaCalculus' 1 6!
+!provides: 'LambdaCalculus' 1 7!
 SystemOrganization addCategory: #LambdaCalculus!
 
 
@@ -34,7 +34,7 @@ block: aSymbol
 	
 	^ Blocks at: aSymbol! !
 
-!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 10:14:04'!
+!LC class methodsFor: 'as yet unclassified' stamp: 'rmv 3/10/2025 10:22:59'!
 initialize
 	| false_ true_ |
 
@@ -57,7 +57,7 @@ initialize
 	Blocks at: #four put: [:f | [:x | f value: (f value: (f value: (f value: x)))]].
 	Blocks at: #five put: [:f | [:x | f value: (f value: (f value: (f value: (f value: x))))]].
 	Blocks at: #six put: [:f | [:x | f value: (f value: (f value: (f value: (f value: (f value: x)))))]].
-	Blocks at: #succ put: [:n | [:f | [:x | f value: n value: f :: value: x]]].
+	Blocks at: #succ put: [:n | [:f | [:x | f value: (n value: f :: value: x)]]].
 		
 	! !
 
@@ -102,9 +102,9 @@ testNot
 	self assert: (bool value: (not value: false_)) equals: true.
 ! !
 
-!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:20:41'!
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:22:07'!
 testNum
-	| num zero one two three four five six|
+	| zero one two three four five six num |
 	
 	num := LC block: #num.
 	zero := LC block: #zero.
@@ -137,4 +137,22 @@ testOr
 	self assert: (bool value: (or value: false_ :: value: true_)) equals: true.
 	self assert: (bool value: (or value: false_ :: value: false_)) equals: false.
 	! !
+
+!LCTests methodsFor: 'testing' stamp: 'rmv 3/10/2025 10:24:24'!
+testSucc
+	| zero one two three four five six num succ |
+	
+	num := LC block: #num.
+	succ := LC block: #succ.
+	zero := LC block: #zero.
+	one := LC block: #one.
+	two := LC block: #two.
+	three := LC block: #three.
+	four := LC block: #four.
+	five := LC block: #five.
+	six := LC block: #six.
+
+	self assert: (num value: (succ value: zero)) equals: 1.
+	self assert: (num value: (succ value: five)) equals: 6.
+! !
 LC initialize!
