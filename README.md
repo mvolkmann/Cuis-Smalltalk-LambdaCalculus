@@ -23,8 +23,8 @@ Despite these severe limitations, it is possible to define
 functions that represent Boolean values and whole numbers.
 These include:
 
-- true (`true\_`; underscore added to avoid conflicting with Smalltalk true)
-- false (`false\_`; underscore added to avoid conflicting with Smalltalk false)
+- `true\_` - underscore added to avoid conflicting with Smalltalk `true`
+- `false\_` - underscore added to avoid conflicting with Smalltalk `false`
 - `zero`, `one`, `two`, ...
 
 It is also possible to define operations on those values including:
@@ -49,7 +49,7 @@ It is also possible to define operations on those values including:
 
 Each of these functions are implemented as Smalltalk blocks.
 They are defined in the `LC` class in its class method `initialize`
-and are to a `Dictionary`.
+and are added to a class variable `Dictionary`.
 The blocks can be retrieved by sending `#block:` to the `LC` class.
 The point of this is not to be elegant or efficient,
 but to show what is possible when all you have are functions.
@@ -64,5 +64,5 @@ num := LC block: #num.
 num value: (add value: two :: value: three) :: print. "prints 5"
 ```
 
-All the unit tests are defined in the `LCTests` class
-and they can be executed by opening a "SUnit Test Runner" window.
+All the unit tests are defined in the `LCTests` class.
+They can be executed by opening a "SUnit Test Runner" window.
